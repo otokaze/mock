@@ -44,7 +44,7 @@ func writeProgram(importPath string, symbols []string) ([]byte, error) {
 
 // run the given program and parse the output as a model.Package.
 func run(program string) (*model.Package, error) {
-	f, err := ioutil.TempFile("", "")
+	f, _ := ioutil.TempFile("", "")
 	filename := f.Name()
 	defer os.Remove(filename)
 	if err := f.Close(); err != nil {
@@ -59,7 +59,7 @@ func run(program string) (*model.Package, error) {
 		return nil, err
 	}
 
-	f, err = os.Open(filename)
+	f, err := os.Open(filename)
 	if err != nil {
 		return nil, err
 	}
