@@ -122,6 +122,7 @@ func runInDir(program []byte, dir string) (*model.Package, error) {
 	return run(filepath.Join(tmpDir, progBinary))
 }
 
+// Reflect get pkg with reflect.
 func Reflect(importPath string, symbols []string) (*model.Package, error) {
 	// TODO: sanity check arguments
 
