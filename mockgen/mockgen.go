@@ -37,6 +37,11 @@ const (
 	gomockImportPath = "github.com/otokaze/mock/gomock"
 )
 
+var (
+	imports, auxFiles, buildFlags, execOnly string
+	progOnly                                bool
+)
+
 // Generator a generator struct.
 type Generator struct {
 	buf                       bytes.Buffer

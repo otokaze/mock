@@ -17,7 +17,6 @@ package mockgen
 // This file contains the model construction by parsing source files.
 
 import (
-	"flag"
 	"fmt"
 	"go/ast"
 	"go/build"
@@ -30,11 +29,6 @@ import (
 	"strings"
 
 	"github.com/otokaze/mock/mockgen/model"
-)
-
-var (
-	imports  = flag.String("imports", "", "(source mode) Comma-separated name=path pairs of explicit imports to use.")
-	auxFiles = flag.String("aux_files", "", "(source mode) Comma-separated pkg=path pairs of auxiliary Go source files.")
 )
 
 // ParseFile parse by a file
@@ -66,8 +60,8 @@ func ParseFile(source string) (*model.Package, error) {
 
 	// Handle -imports.
 	dotImports := make(map[string]bool)
-	if *imports != "" {
-		for _, kv := range strings.Split(*imports, ",") {
+	if imports != "" {
+		for _, kv := range strings.Split(imports, ",") {
 			eq := strings.Index(kv, "=")
 			k, v := kv[:eq], kv[eq+1:]
 			if k == "." {
@@ -81,7 +75,7 @@ func ParseFile(source string) (*model.Package, error) {
 	}
 
 	// Handle -aux_files.
-	if err := p.parseAuxFiles(*auxFiles); err != nil {
+	if err := p.parseAuxFiles(auxFiles); err != nil {
 		return nil, err
 	}
 	p.addAuxInterfacesFromFile(packageImport, file) // this file

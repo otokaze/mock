@@ -19,7 +19,6 @@ package mockgen
 import (
 	"bytes"
 	"encoding/gob"
-	"flag"
 	"go/build"
 	"io/ioutil"
 	"os"
@@ -29,12 +28,6 @@ import (
 	"text/template"
 
 	"github.com/otokaze/mock/mockgen/model"
-)
-
-var (
-	progOnly   = flag.Bool("prog_only", false, "(reflect mode) Only generate the reflection program; write it to stdout and exit.")
-	execOnly   = flag.String("exec_only", "", "(reflect mode) If set, execute this reflection program.")
-	buildFlags = flag.String("build_flags", "", "(reflect mode) Additional flags for go build.")
 )
 
 func writeProgram(importPath string, symbols []string) ([]byte, error) {
@@ -106,8 +99,8 @@ func runInDir(program []byte, dir string) (*model.Package, error) {
 
 	cmdArgs := []string{}
 	cmdArgs = append(cmdArgs, "build")
-	if *buildFlags != "" {
-		cmdArgs = append(cmdArgs, *buildFlags)
+	if buildFlags != "" {
+		cmdArgs = append(cmdArgs, buildFlags)
 	}
 	cmdArgs = append(cmdArgs, "-o", progBinary, progSource)
 
@@ -126,8 +119,8 @@ func runInDir(program []byte, dir string) (*model.Package, error) {
 func Reflect(importPath string, symbols []string) (*model.Package, error) {
 	// TODO: sanity check arguments
 
-	if *execOnly != "" {
-		return run(*execOnly)
+	if execOnly != "" {
+		return run(execOnly)
 	}
 
 	program, err := writeProgram(importPath, symbols)
@@ -135,7 +128,7 @@ func Reflect(importPath string, symbols []string) (*model.Package, error) {
 		return nil, err
 	}
 
-	if *progOnly {
+	if progOnly {
 		os.Stdout.Write(program)
 		os.Exit(0)
 	}
