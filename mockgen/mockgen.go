@@ -34,7 +34,7 @@ import (
 )
 
 const (
-	gomockImportPath = "github.com/otokaze/mock/gomock"
+	gomockImportPath = "github.com/golang/mock/gomock"
 )
 
 var (
